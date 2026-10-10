@@ -1,0 +1,26 @@
+/* Landing page: hero, wave divider, steps, features, roles. Owner: Amrin */
+.hero{background:linear-gradient(160deg,#0A2540 0%,#0F4FB8 60%,#1B6EF3 100%);color:#fff;padding:84px 0 0;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;padding-bottom:70px}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.12);padding:6px 14px;border-radius:999px;font-size:.82rem;margin-bottom:18px}
+.eyebrow i{width:8px;height:8px;border-radius:50%;background:#7FE3F2;animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.hero h1{color:#fff;font-size:clamp(2.1rem,4.4vw,3.3rem);max-width:15ch}
+.hero .lead{color:rgba(255,255,255,.82);max-width:48ch;font-size:1.05rem;margin:14px 0 26px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero .btn-outline{background:transparent;border-color:rgba(255,255,255,.6);color:#fff}
+.hero-stats{display:grid;gap:14px}
+.hero-stats .tile{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--radius);padding:18px 20px;backdrop-filter:blur(8px)}
+.tile b{display:block;font:700 2rem var(--display)}.tile span{font-size:.85rem;opacity:.8}
+.wave{display:block;width:100%;height:70px;margin-bottom:-1px}
+.wave path{fill:var(--bg)}
+.section{padding:72px 0}.section.alt{background:#fff}
+.section-head{max-width:620px;margin-bottom:36px}.section-head p{color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;counter-reset:s}
+.step{position:relative;padding:22px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.step::before{counter-increment:s;content:"0" counter(s);font:700 .85rem var(--display);color:var(--blue);background:var(--sky);padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:12px}
+.step p,.feature p,.role p{color:var(--muted);font-size:.92rem;margin:0}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature,.role{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.band-card{border-left:5px solid var(--c);background:#fff;border-radius:var(--radius);padding:20px 22px;border:1px solid var(--line);border-left-width:5px}
+.footer-in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media(max-width:820px){.hero .wrap,.steps,.grid-3{grid-template-columns:1fr}.hero{padding-top:56px}}

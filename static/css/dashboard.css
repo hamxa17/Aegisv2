@@ -1,0 +1,31 @@
+/* Dashboards: stats, tables, badges, timeline, toolbar. Owner: Amrin */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;border-top:4px solid var(--blue)}
+.stat b{display:block;font:700 1.9rem var(--display);color:var(--navy)}.stat span{color:var(--muted);font-size:.85rem}
+.stat.warn{border-top-color:var(--critical)}
+.grid-2{display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:start}
+.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.panel-head h2{font-size:1.1rem;margin:0}.panel-body{padding:22px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:12px 18px;background:var(--bg)}
+td{padding:14px 18px;border-top:1px solid var(--line);vertical-align:middle}
+td form{display:inline-flex;gap:6px;align-items:center;margin:0}
+td select{padding:6px 8px;font-size:.8rem;width:auto}
+.badge{display:inline-block;padding:3px 11px;border-radius:999px;font-size:.74rem;font-weight:700;background:var(--bg);color:var(--c);border:1px solid var(--c)}
+.b-low{--c:var(--low)}.b-medium{--c:var(--medium)}.b-high{--c:var(--high)}.b-critical{--c:var(--critical);background:#FDECEE}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:5px 14px;font:600 .8rem var(--body);cursor:pointer}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.search{max-width:200px;padding:7px 12px!important;font-size:.85rem!important}
+.empty{padding:36px;text-align:center;color:var(--muted)}
+.timeline{list-style:none;margin:0;padding:0 0 0 6px}
+.timeline li{position:relative;padding:0 0 22px 30px;color:var(--muted)}
+.timeline li::before{content:"";position:absolute;left:5px;top:20px;bottom:-2px;width:2px;background:var(--line)}
+.timeline li:last-child::before{display:none}
+.timeline li::after{content:"";position:absolute;left:0;top:4px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+.timeline li.done{color:var(--navy);font-weight:600}.timeline li.done::after{background:var(--blue);border-color:var(--blue)}
+.timeline li.done::before{background:var(--blue)}
+.bars{display:grid;gap:12px}.bar-row{display:grid;grid-template-columns:80px 1fr 30px;gap:12px;align-items:center;font-size:.88rem}
+@media(max-width:960px){.stats{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}

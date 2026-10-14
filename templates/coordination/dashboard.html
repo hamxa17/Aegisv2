@@ -1,0 +1,36 @@
+{% extends 'base.html' %}{% load static %}{% block title %}Coordinator — Aegis{% endblock %}
+{% block content %}<div class="wrap page">
+  <div class="page-head"><div><h1>Relief operations overview</h1><p class="muted">District-wide view of requests, resources and activity.</p></div></div>
+  <div class="stats">
+    <div class="stat"><b>{{ stats.open }}</b><span>Open requests</span></div>
+    <div class="stat warn"><b>{{ stats.critical }}</b><span>Critical, unassigned</span></div>
+    <div class="stat"><b>{{ stats.volunteers }}</b><span>Volunteers</span></div>
+    <div class="stat {% if shortage %}warn{% endif %}"><b>{{ shortage }}</b><span>Units short of demand</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel" id="queue">
+      <div class="panel-head"><h2>Request queue</h2>
+        <div class="chips"><button class="chip on" data-band="all">All</button><button class="chip" data-band="critical">Critical</button><button class="chip" data-band="high">High</button><button class="chip" data-band="medium">Medium</button><button class="chip" data-band="low">Low</button></div>
+        <input class="search" id="q-search" type="search" placeholder="Search…"></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Request</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody>
+        {% for r in queue %}<tr data-band="{{ r.priority_band }}">
+          <td><b>#{{ r.pk }}</b> {{ r.get_need_type_display }} ×{{ r.quantity }}<br><span class="muted">{{ r.location }} · {{ r.household_size }} people</span></td>
+          <td><span class="badge b-{{ r.priority_band }}">{{ r.priority_band|title }} · {{ r.priority_score }}</span></td>
+          <td>{{ r.get_status_display }}{% if r.assignment %}<br><span class="muted">{{ r.assignment.volunteer.display_name }}</span>{% endif %}</td>
+          <td>{% if r.status == 'pending' %}
+            <form method="post" action="{% url 'coord_review' r.pk %}">{% csrf_token %}<button name="action" value="verify" class="btn btn-primary btn-sm">Verify</button><button name="action" value="reject" class="btn btn-outline btn-sm">Reject</button></form>
+          {% elif r.status == 'verified' %}
+            <form method="post" action="{% url 'coord_assign' r.pk %}">{% csrf_token %}<select name="volunteer" required>{% for v in volunteers %}<option value="{{ v.pk }}">{{ v.display_name }}</option>{% empty %}<option value="">No volunteers</option>{% endfor %}</select><button class="btn btn-primary btn-sm">Assign</button></form>
+          {% else %}<span class="muted">—</span>{% endif %}</td></tr>
+        {% empty %}<tr><td colspan="4" class="empty">No open requests.</td></tr>{% endfor %}
+      </tbody></table></div>
+    </div>
+    <div class="panel"><div class="panel-head"><h2>Stock vs demand</h2><a href="{% url 'resources' %}">Manage</a></div>
+      {% for row in resource_rows %}<div class="res"><div class="res-top"><span>{{ row.resource.name }}</span><span>{{ row.resource.stock }} / {{ row.resource.capacity }}</span></div>
+        <div class="track {% if row.resource.percent < 50 %}low{% endif %}"><i style="width:{{ row.resource.percent }}%"></i></div>
+        {% if row.shortage %}<p class="short">Short by {{ row.shortage }}</p>{% endif %}</div>{% endfor %}
+    </div>
+  </div>
+</div>{% endblock %}
+{% block scripts %}<script src="{% static 'js/queue.js' %}"></script>{% endblock %}

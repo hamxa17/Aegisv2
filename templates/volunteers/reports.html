@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block title %}Reports — Aegis{% endblock %}
+{% block content %}<div class="wrap page">
+  <div class="page-head"><div><h1>Relief reports</h1><p class="muted">Summary of requests, priorities and completed relief.</p></div></div>
+  <div class="stats" style="grid-template-columns:repeat(2,1fr)"><div class="stat"><b>{{ total }}</b><span>Total requests</span></div><div class="stat"><b>{{ rate }}%</b><span>Delivered</span></div></div>
+  <div class="grid-2" style="grid-template-columns:1fr 1fr">
+    <div class="panel"><div class="panel-head"><h2>By priority</h2></div><div class="panel-body bars">
+      {% for label, n, key in bands %}<div class="bar-row"><span>{{ label }}</span><div class="track"><i style="width:{% widthratio n max_band 100 %}%"></i></div><b>{{ n }}</b></div>{% endfor %}</div></div>
+    <div class="panel"><div class="panel-head"><h2>By status</h2></div><table>{% for label, n in statuses %}<tr><td>{{ label }}</td><td><b>{{ n }}</b></td></tr>{% endfor %}</table></div>
+  </div>
+</div>{% endblock %}

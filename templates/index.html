@@ -1,0 +1,46 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+<section class="hero"><div class="wrap">
+  <div>
+    <span class="eyebrow"><i></i> Coordinating flood relief across the district</span>
+    <h1>Get help to the people who need it most, first.</h1>
+    <p class="lead">Aegis connects flood-affected families, volunteers and coordinators on one platform — so urgent requests are seen and limited food, water and medicine go where they matter most.</p>
+    <div class="hero-actions"><a class="btn btn-light" href="{% url 'register' %}">Request help</a><a class="btn btn-outline" href="{% url 'register' %}">Join as a volunteer</a></div>
+  </div>
+  <div class="hero-stats">
+    <div class="tile"><b data-count="{{ total }}">{{ total }}</b><span>Relief requests logged</span></div>
+    <div class="tile"><b data-count="{{ delivered }}">{{ delivered }}</b><span>Deliveries completed</span></div>
+    <div class="tile"><b data-count="{{ volunteers }}">{{ volunteers }}</b><span>Volunteers on the ground</span></div>
+  </div>
+</div>
+<svg class="wave" viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 35 C240 80 480 0 720 35 C960 70 1200 0 1440 35 V70 H0Z"/></svg></section>
+
+<section class="section" id="how"><div class="wrap">
+  <div class="section-head"><h2>From request to delivery, in four steps</h2><p>Every request follows the same clear path, so families know what is happening and coordinators know what comes next.</p></div>
+  <div class="steps">
+    <div class="step"><h3>Submit</h3><p>A family files what is needed and how many people are affected.</p></div>
+    <div class="step"><h3>Verify</h3><p>A coordinator reviews the request before it joins the queue.</p></div>
+    <div class="step"><h3>Prioritize</h3><p>Aegis scores urgency automatically and allocates stock by priority.</p></div>
+    <div class="step"><h3>Deliver</h3><p>A volunteer is assigned and marks the delivery complete.</p></div>
+  </div>
+</div></section>
+
+<section class="section alt" id="priority"><div class="wrap">
+  <div class="section-head"><h2>Triaged by risk, not by arrival time</h2><p>Medical emergency +5 · No food or water +4 · More than 50 affected +3 · Children or elderly +2 · Normal request +1.</p></div>
+  <div class="grid-3">
+    <div class="band-card" style="--c:var(--critical)"><span class="badge b-critical">Critical · 8+</span><h3 style="margin-top:12px">Handled first</h3><p class="muted">Example: no water + 60 people + children = 9.</p></div>
+    <div class="band-card" style="--c:var(--high)"><span class="badge b-high">High · 5–7</span><h3 style="margin-top:12px">Moves up quickly</h3><p class="muted">Medical need or households with no supplies.</p></div>
+    <div class="band-card" style="--c:var(--low)"><span class="badge b-low">Medium &amp; Low · 1–4</span><h3 style="margin-top:12px">Served as stock allows</h3><p class="muted">Higher priorities are always considered first.</p></div>
+  </div>
+</div></section>
+
+<section class="section"><div class="wrap">
+  <div class="section-head"><h2>Built for three roles</h2></div>
+  <div class="grid-3">
+    <div class="role"><h3>Affected family</h3><p>Submit what you need and watch your request move from pending to delivered.</p></div>
+    <div class="role"><h3>Volunteer</h3><p>See the verified requests assigned to you and mark deliveries complete.</p></div>
+    <div class="role"><h3>Coordinator</h3><p>Verify, assign volunteers, track stock and shortages from one screen.</p></div>
+  </div>
+</div></section>
+{% endblock %}
+{% block scripts %}<script src="{% static 'js/landing.js' %}"></script>{% endblock %}

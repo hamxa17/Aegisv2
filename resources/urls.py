@@ -1,3 +1,9 @@
-from django.urls import path  # noqa: F401  (routes arrive in week 2)
+from django.urls import path
 
-urlpatterns = []
+from . import views
+
+urlpatterns = [
+    path("", views.resource_list, name="resources"),
+    path("<int:pk>/stock/", views.update_stock, name="update_stock"),
+    path("allocate/", views.run_allocation, name="run_allocation"),
+]

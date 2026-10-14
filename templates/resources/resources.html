@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% load static %}{% block title %}Resources — Aegis{% endblock %}
+{% block content %}<div class="wrap page">
+  <div class="page-head"><div><h1>Resources on hand</h1><p class="muted">Stock is allocated to verified requests in priority order.</p></div>
+    <form method="post" action="{% url 'run_allocation' %}">{% csrf_token %}<button class="btn btn-primary">Recalculate allocation</button></form></div>
+  <div class="panel">{% for row in rows %}{% with r=row.resource %}
+    <div class="res" data-cap="{{ r.capacity }}">
+      <div class="res-top"><span>{{ r.name }}</span><span>{{ r.stock }} / {{ r.capacity }} · demand {{ row.demand }}
+        {% if row.shortage %}<span class="short">short {{ row.shortage }}</span>{% else %}<span class="ok">covered</span>{% endif %}</span></div>
+      <div class="track {% if r.percent < 50 %}low{% endif %}"><i style="width:{{ r.percent }}%"></i></div>
+      <form class="res-form" method="post" action="{% url 'update_stock' r.pk %}">{% csrf_token %}<input type="number" min="0" name="stock" value="{{ r.stock }}"><button class="btn btn-outline btn-sm">Update stock</button></form>
+    </div>{% endwith %}{% empty %}<p class="empty">No resources yet — add them in the admin or run <code>python manage.py seed_demo</code>.</p>{% endfor %}</div>
+</div>{% endblock %}
+{% block scripts %}<script src="{% static 'js/resources.js' %}"></script>{% endblock %}

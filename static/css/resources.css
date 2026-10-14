@@ -1,0 +1,9 @@
+/* Resource stock bars. Owner: Hamza */
+.res{padding:16px 22px;border-top:1px solid var(--line)}
+.res:first-of-type{border-top:0}
+.res-top{display:flex;justify-content:space-between;font-weight:600;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.track{height:10px;border-radius:999px;background:var(--sky);overflow:hidden}
+.track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--aqua));transition:width .5s}
+.track.low i{background:var(--high)}
+.res-form{display:flex;gap:8px;margin-top:12px;align-items:center}.res-form input{max-width:110px;padding:7px 10px}
+.short{color:var(--critical);font-weight:700;font-size:.85rem}.ok{color:var(--low);font-weight:600;font-size:.85rem}

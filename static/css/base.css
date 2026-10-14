@@ -1,0 +1,34 @@
+/* AEGIS "Tidewater" design system — tokens, layout, nav, buttons. Owner: Amrin */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+:root{--navy:#0A2540;--blue:#1B6EF3;--blue-d:#1558C8;--sky:#EAF3FF;--aqua:#22B8CF;--ink:#12263F;--muted:#5B6B82;--line:#DCE6F2;--bg:#F7FAFE;
+--low:#1FA67A;--medium:#D99A00;--high:#E8761E;--critical:#D92D3A;--radius:14px;--shadow:0 6px 24px rgba(10,37,64,.08);--nav-h:64px;
+--display:'Sora',sans-serif;--body:'Inter',system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--body);color:var(--ink);background:var(--bg);line-height:1.55}
+h1,h2,h3{font-family:var(--display);color:var(--navy);margin:0 0 .4em;letter-spacing:-.01em;line-height:1.2}
+a{color:var(--blue);text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.muted{color:var(--muted)}
+.nav{position:sticky;top:0;z-index:10;height:var(--nav-h);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:24px;height:100%}
+.brand{display:flex;align-items:center;gap:8px;font:700 1.2rem var(--display);color:var(--navy)}
+.nav-links{display:flex;align-items:center;gap:22px;margin-left:auto}
+.nav-links a{color:var(--ink);font-weight:500;font-size:.92rem}
+.nav-links a:hover,.nav-links a.active{color:var(--blue)}
+.nav-links form{margin:0}
+.nav-toggle{display:none;margin-left:auto;background:none;border:0;font-size:1.5rem;color:var(--navy);cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:999px;font:600 .9rem var(--body);border:1.5px solid transparent;cursor:pointer;transition:.15s}
+.btn-primary{background:var(--blue);color:#fff}.btn-primary:hover{background:var(--blue-d)}
+.btn-outline{border-color:var(--blue);color:var(--blue);background:#fff}.btn-outline:hover{background:var(--sky)}
+.btn-ghost{background:transparent;color:var(--ink)}.btn-ghost:hover{color:var(--blue)}
+.btn-light{background:#fff;color:var(--navy)}
+.btn-sm{padding:6px 14px;font-size:.8rem}.btn-block{width:100%}
+.page{padding:40px 0 80px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.page-head h1{font-size:1.9rem}
+.msg{padding:12px 16px;border-radius:10px;background:var(--sky);border:1px solid #BBD6FB;margin-top:16px}
+.msg.error{background:#FDECEE;border-color:#F5B5BB}
+.footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:.85rem;background:#fff}
+@media(max-width:820px){.nav-toggle{display:block}
+.nav-links{display:none;position:absolute;top:var(--nav-h);left:0;right:0;flex-direction:column;align-items:flex-start;background:#fff;padding:20px 24px;border-bottom:1px solid var(--line)}
+.nav-links.open{display:flex}}

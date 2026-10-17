@@ -1,4 +1,3 @@
-# Demo data for presentations. Owner: Amrin
 from django.core.management.base import BaseCommand
 
 from accounts.models import User
@@ -32,4 +31,3 @@ class Command(BaseCommand):
                 ("Shibganj", "shelter", 6, 6, {})]:
                 ReliefRequest.objects.create(requester=fam, location=loc, need_type=need, quantity=qty, household_size=size, **kw)
         self.stdout.write(self.style.SUCCESS(f"Demo data ready. Logins: coord@aegis.test / volunteer@aegis.test / family@aegis.test  password: {PASSWORD}"))
-        

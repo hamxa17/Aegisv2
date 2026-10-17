@@ -1,4 +1,4 @@
-/* Landing page: hero, wave divider, steps, features, roles. Owner: Amrin */
+/* Landing page: hero, wave divider, steps, features, roles. Owner: Sunita */
 .hero{background:linear-gradient(160deg,#0A2540 0%,#0F4FB8 60%,#1B6EF3 100%);color:#fff;padding:84px 0 0;position:relative;overflow:hidden}
 .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center;padding-bottom:70px}
 .eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.12);padding:6px 14px;border-radius:999px;font-size:.82rem;margin-bottom:18px}

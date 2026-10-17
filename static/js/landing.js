@@ -1,4 +1,4 @@
-// Landing page: count-up numbers + delivery confirmation prompt. Owner: Amrin
+// Landing page: count-up numbers + delivery confirmation prompt. Owner: Sunita
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-count]').forEach((el) => {
     const end = +el.dataset.count; let n = 0; const step = Math.max(1, Math.ceil(end / 40));

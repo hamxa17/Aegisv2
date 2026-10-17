@@ -35,3 +35,10 @@ def summary():
         demand = ReliefRequest.objects.filter(status__in=OPEN, need_type=res.need_type).aggregate(s=Sum("quantity"))["s"] or 0
         rows.append({"resource": res, "demand": demand, "shortage": max(demand - res.stock, 0)})
     return rows
+
+
+def consume(relief_request):
+    """Called on delivery: take the allocated units out of stock."""
+    for a in relief_request.allocations.select_related("resource"):
+        a.resource.stock = max(a.resource.stock - a.quantity, 0)
+        a.resource.save(update_fields=["stock"])

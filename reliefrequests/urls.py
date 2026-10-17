@@ -1,4 +1,8 @@
 from django.urls import path
 
-# Routes are added later (Day 7 and Day 10).
-urlpatterns = []
+from . import views
+
+urlpatterns = [
+    path("new/", views.submit_request, name="submit_request"),
+    path("mine/", views.my_requests, name="my_requests"),
+]

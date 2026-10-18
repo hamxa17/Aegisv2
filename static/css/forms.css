@@ -1,0 +1,19 @@
+/* Forms, cards, auth pages, water-level priority gauge. Owner: Member 2 (Sadia) */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+.auth-shell{display:grid;place-items:center;padding:56px 24px}
+.auth-card{width:100%;max-width:440px}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:.86rem;margin-bottom:6px}
+input[type=text],input[type=email],input[type=password],input[type=tel],input[type=number],select,textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(27,110,243,.15)}
+.err{color:var(--critical);font-size:.82rem;margin:6px 0 0}
+.check{display:flex;gap:10px;align-items:center;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;cursor:pointer}
+.check:has(input:checked){border-color:var(--blue);background:var(--sky)}
+.check input{width:18px;height:18px;accent-color:var(--blue)}
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.role-grid label{display:flex;gap:8px;align-items:center;justify-content:center;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-weight:600;cursor:pointer}
+.role-grid label:has(input:checked){border-color:var(--blue);background:var(--sky);color:var(--blue-d)}
+.role-grid input{display:none}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.form-grid .full{grid-column:1/-1}
+.request-shell{display:grid;grid-template-columns:1fr 330px;gap:32px;align-items:start}
+@media(max-width:860px){.request-shell,.form-grid{grid-template-columns:1fr}}

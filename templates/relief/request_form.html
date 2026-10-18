@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% load static %}{% block title %}Request relief — Aegis{% endblock %}
+{% block content %}<div class="wrap page"><div class="request-shell">
+  <div>
+    <div class="page-head"><div><h1>Submit a relief request</h1><p class="muted">Tell us what you need and how many people are affected.</p></div></div>
+    <form class="card" method="post" id="request-form">{% csrf_token %}
+      <div class="form-grid">
+        <div class="full">{% with f=form.location %}{% include '_field.html' %}{% endwith %}</div>
+        <div>{% with f=form.household_size %}{% include '_field.html' %}{% endwith %}</div>
+        <div>{% with f=form.need_type %}{% include '_field.html' %}{% endwith %}</div>
+        <div>{% with f=form.quantity %}{% include '_field.html' %}{% endwith %}</div>
+        <div class="full">{% with f=form.description %}{% include '_field.html' %}{% endwith %}</div>
+        <div class="full">
+          <label class="check">{{ form.medical_emergency }} This involves a medical emergency</label>
+          <label class="check">{{ form.no_supplies }} We have no food or drinking water</label>
+          <label class="check">{{ form.has_vulnerable }} Children or elderly people are affected</label>
+        </div>
+      </div>
+      <button class="btn btn-primary">Submit request</button>
+    </form>
+  </div>
+</div></div>{% endblock %}

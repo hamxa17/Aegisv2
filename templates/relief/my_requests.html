@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% block title %}My requests — Aegis{% endblock %}
+{% block content %}<div class="wrap page">
+  <div class="page-head"><div><h1>Welcome back, {{ user.display_name }}</h1><p class="muted">Here's where your relief requests stand.</p></div><a class="btn btn-primary" href="{% url 'submit_request' %}">New request</a></div>
+  <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat"><b>{{ stats.active }}</b><span>Active requests</span></div>
+    <div class="stat"><b>{{ stats.waiting }}</b><span>Awaiting verification</span></div>
+    <div class="stat"><b>{{ stats.delivered }}</b><span>Delivered</span></div>
+  </div>
+  <div class="grid-2">
+    <div class="panel"><div class="panel-head"><h2>Your requests</h2></div><div class="table-wrap"><table>
+      <thead><tr><th>Need</th><th>Priority</th><th>Status</th><th>Submitted</th></tr></thead>
+      {% for r in reqs %}<tr><td>{{ r.get_need_type_display }} — {{ r.household_size }} people</td><td><span class="badge b-{{ r.priority_band }}">{{ r.priority_band|title }} · {{ r.priority_score }}</span></td><td>{{ r.get_status_display }}</td><td class="muted">{{ r.created_at|timesince }} ago</td></tr>
+      {% empty %}<tr><td colspan="4" class="empty">No requests yet.</td></tr>{% endfor %}
+    </table></div></div>
+    {% if latest %}<div class="panel"><div class="panel-head"><h2>Latest request</h2></div><div class="panel-body">
+      <p class="muted">{{ latest.get_need_type_display }} — {{ latest.location }}</p>
+      {% if steps %}<ul class="timeline">{% for s in steps %}<li class="{% if s.done %}done{% endif %}">{{ s.title }}</li>{% endfor %}</ul>
+      {% else %}<p class="err">This request was not approved. Please contact a coordinator.</p>{% endif %}
+    </div></div>{% endif %}
+  </div>
+</div>{% endblock %}

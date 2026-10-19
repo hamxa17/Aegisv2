@@ -1,7 +1,7 @@
 {% extends 'base.html' %}{% load static %}{% block title %}Request relief — Aegis{% endblock %}
 {% block content %}<div class="wrap page"><div class="request-shell">
   <div>
-    <div class="page-head"><div><h1>Submit a relief request</h1><p class="muted">Tell us what you need and how many people are affected.</p></div></div>
+    <div class="page-head"><div><h1>Submit a relief request</h1><p class="muted">The water level on the right rises with urgency — it shows how your request will be triaged.</p></div></div>
     <form class="card" method="post" id="request-form">{% csrf_token %}
       <div class="form-grid">
         <div class="full">{% with f=form.location %}{% include '_field.html' %}{% endwith %}</div>
@@ -18,4 +18,13 @@
       <button class="btn btn-primary">Submit request</button>
     </form>
   </div>
+  <aside class="card gauge-panel" id="gauge" data-band="low">
+    <div class="tank"><div class="water" id="g-water"></div><span class="tank-score" id="g-score">1</span></div>
+    <span class="badge b-low" id="g-badge">Low priority</span>
+    <ul class="factors">
+      <li data-f="medical_emergency">Medical emergency <b>+5</b></li><li data-f="no_supplies">No food / water <b>+4</b></li>
+      <li data-f="large">Over 50 affected <b>+3</b></li><li data-f="has_vulnerable">Children / elderly <b>+2</b></li>
+    </ul>
+  </aside>
 </div></div>{% endblock %}
+{% block scripts %}<script src="{% static 'js/gauge.js' %}"></script>{% endblock %}

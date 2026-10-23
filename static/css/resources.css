@@ -1,9 +1,20 @@
 /* Resource stock bars. Owner: Hamza */
+.res-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.res-tile{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.res-tile b{display:block;font:500 1.6rem var(--display);color:var(--navy)}.res-tile b.ok{color:var(--low)}.res-tile b.short{color:var(--critical)}
+.res-tile span{font-size:.8rem;color:var(--muted)}
 .res{padding:16px 22px;border-top:1px solid var(--line)}
 .res:first-of-type{border-top:0}
-.res-top{display:flex;justify-content:space-between;font-weight:600;margin-bottom:8px;gap:8px;flex-wrap:wrap}
-.track{height:10px;border-radius:999px;background:var(--sky);overflow:hidden}
-.track i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--aqua));transition:width .5s}
-.track.low i{background:var(--high)}
-.res-form{display:flex;gap:8px;margin-top:12px;align-items:center}.res-form input{max-width:110px;padding:7px 10px}
+.res-short{background:#FFF8F8}
+.res-top{display:flex;justify-content:space-between;align-items:center;font-weight:600;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.res-name{display:flex;align-items:center;gap:10px}
+.res-icon{width:28px;height:28px;border-radius:8px;background:var(--sky);color:var(--blue-d);display:inline-flex;align-items:center;justify-content:center;font-size:.85rem}
+.chip{border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:600}
+.chip-ok{background:#E3F6EE;color:#0F6E56}.chip-low{background:#FDF0E3;color:#8A4B0F}.chip-short{background:#FCE9EA;color:#A32D2D}
+.track{height:10px;border-radius:999px;background:var(--sky);position:relative}
+.track i{display:block;height:100%;border-radius:999px;background:var(--low);transition:width .5s,background .3s}
+.track u{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--muted);opacity:.45}
+.res-low .track i{background:var(--high)}.res-short .track i{background:var(--critical)}
+.res-form{display:flex;gap:8px;margin-top:12px;align-items:center;margin-bottom:0}.res-form input{max-width:110px;padding:7px 10px}
+.res-hint{margin-right:auto;font-size:.85rem;color:var(--muted)}
 .short{color:var(--critical);font-weight:700;font-size:.85rem}.ok{color:var(--low);font-weight:600;font-size:.85rem}

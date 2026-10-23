@@ -1,0 +1,36 @@
+<!--{% load static %}<!DOCTYPE html>-->
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Aegis — Flood Relief Coordination{% endblock %}</title>
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/landing.css' %}">
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/resources.css' %}">
+</head><body>
+<header class="nav"><div class="wrap nav-in">
+  <a class="brand" href="{% url 'index' %}">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 2C14 2 5 12 5 18a9 9 0 0018 0C23 12 14 2 14 2z" fill="#1B6EF3"/><path d="M10 17.5l3 3 5-6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Aegis</a>
+  <button class="nav-toggle" aria-label="Menu">☰</button>
+  <nav class="nav-links" id="nav-links">
+    {% if user.is_authenticated %}
+      {% if user.role == 'affected' %}
+        <a href="{% url 'my_requests' %}">My requests</a><a href="{% url 'submit_request' %}">New request</a>
+      {% elif user.role == 'volunteer' %}
+        <a href="{% url 'tasks' %}">My deliveries</a>
+      {% else %}
+        <a href="{% url 'coord_dashboard' %}">Overview</a><a href="{% url 'resources' %}">Resources</a><a href="{% url 'reports' %}">Reports</a>
+      {% endif %}
+      <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn-outline btn-sm">Log out</button></form>
+    {% else %}
+      <a href="{% url 'index' %}#how">How it works</a><a href="{% url 'index' %}#priority">Priority</a>
+      <a href="{% url 'login' %}">Log in</a><a class="btn btn-primary btn-sm" href="{% url 'register' %}">Get started</a>
+    {% endif %}
+  </nav>
+</div></header>
+{% if messages %}<div class="wrap">{% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}
+<footer class="footer"><div class="wrap footer-in"><span>Aegis · Flood Relief Coordination</span><span>Team 2 · CSE302</span></div></footer>
+<script src="{% static 'js/main.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body></html>

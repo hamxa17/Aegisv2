@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% load static %}{% block title %}My deliveries — Aegis{% endblock %}
+{% block content %}<div class="wrap page">
+  <div class="page-head"><div><h1>Hello, {{ user.display_name }}</h1><p class="muted">Verified requests assigned to you, most urgent first.</p></div></div>
+  <div class="panel"><div class="panel-head"><h2>To deliver ({{ todo|length }})</h2></div><div class="table-wrap"><table>
+    <thead><tr><th>Request</th><th>Priority</th><th>Deliver</th></tr></thead>
+    {% for a in todo %}<tr><td><b>{{ a.request.get_need_type_display }} ×{{ a.request.quantity }}</b><br><span class="muted">{{ a.request.location }} · {{ a.request.household_size }} people</span></td>
+      <td><span class="badge b-{{ a.request.priority_band }}">{{ a.request.priority_band|title }}</span></td>
+      <td><form method="post" action="{% url 'mark_delivered' a.pk %}" data-confirm="Confirm this delivery is complete?">{% csrf_token %}<input type="text" name="note" placeholder="Note (optional)"><button class="btn btn-primary btn-sm">Mark delivered</button></form></td></tr>
+    {% empty %}<tr><td colspan="3" class="empty">Nothing assigned right now.</td></tr>{% endfor %}</table></div></div>
+  {% if done %}<p class="muted" style="margin-top:24px">Completed: {{ done|length }} deliveries. Thank you!</p>{% endif %}
+</div>{% endblock %}
+{% block scripts %}<script src="{% static 'js/landing.js' %}"></script>{% endblock %}

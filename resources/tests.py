@@ -50,3 +50,25 @@ class ResourcePageTests(TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertContains(page, "resources tracked")
         self.assertContains(page, "Below half")
+
+
+class ButtonTests(TestCase):
+    def setUp(self):
+        self.coord = User.objects.create_user("c2@x.com", password="x", role="coordinator")
+        self.res = Resource.objects.create(name="Water", need_type="water", stock=100, capacity=500)
+
+    def test_update_button(self):
+        self.client.force_login(self.coord)
+        r = self.client.post(f"/resources/{self.res.pk}/stock/", {"stock": "250"})
+        self.assertEqual(r.status_code, 302)
+        self.res.refresh_from_db(); self.assertEqual(self.res.stock, 250)
+
+    def test_recalculate_button(self):
+        self.client.force_login(self.coord)
+        self.assertEqual(self.client.post("/resources/allocate/").status_code, 302)
+
+    def test_non_coordinator_blocked(self):
+        v = User.objects.create_user("v2@x.com", password="x", role="volunteer")
+        self.client.force_login(v)
+        self.client.post(f"/resources/{self.res.pk}/stock/", {"stock": "999"})
+        self.res.refresh_from_db(); self.assertEqual(self.res.stock, 100)

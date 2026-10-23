@@ -14,6 +14,7 @@
 .track{height:10px;border-radius:999px;background:var(--sky);position:relative}
 .track i{display:block;height:100%;border-radius:999px;background:var(--low);transition:width .5s,background .3s}
 .track u{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--muted);opacity:.45}
+.track.low i{background:var(--high)}
 .res-low .track i{background:var(--high)}.res-short .track i{background:var(--critical)}
 .res-form{display:flex;gap:8px;margin-top:12px;align-items:center;margin-bottom:0}.res-form input{max-width:110px;padding:7px 10px}
 .res-hint{margin-right:auto;font-size:.85rem;color:var(--muted)}

@@ -29,3 +29,5 @@ td select{padding:6px 8px;font-size:.8rem;width:auto}
 .timeline li.done::before{background:var(--blue)}
 .bars{display:grid;gap:12px}.bar-row{display:grid;grid-template-columns:80px 1fr 30px;gap:12px;align-items:center;font-size:.88rem}
 @media(max-width:960px){.stats{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}}
+/* Added by Amrin: photo link under each request */
+.photo-link{font-size:.82rem;font-weight:600;white-space:nowrap}

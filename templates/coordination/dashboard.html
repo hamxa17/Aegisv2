@@ -15,7 +15,7 @@
       <div class="table-wrap"><table>
         <thead><tr><th>Request</th><th>Priority</th><th>Status</th><th>Action</th></tr></thead><tbody>
         {% for r in queue %}<tr data-band="{{ r.priority_band }}">
-          <td><b>#{{ r.pk }}</b> {{ r.get_need_type_display }} ×{{ r.quantity }}<br><span class="muted">{{ r.location }} · {{ r.household_size }} people</span></td>
+          <td><b>#{{ r.pk }}</b> {{ r.get_need_type_display }} ×{{ r.quantity }}<br><span class="muted">{{ r.location }} · {{ r.household_size }} people</span>{# Added by Amrin: link to this request's photos #}<br><a class="photo-link" href="{% url 'photo_list' r.pk %}">📷 Photos ({{ r.photos.count }})</a></td>
           <td><span class="badge b-{{ r.priority_band }}">{{ r.priority_band|title }} · {{ r.priority_score }}</span></td>
           <td>{{ r.get_status_display }}{% if r.assignment %}<br><span class="muted">{{ r.assignment.volunteer.display_name }}</span>{% endif %}</td>
           <td>{% if r.status == 'pending' %}

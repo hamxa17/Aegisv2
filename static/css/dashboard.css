@@ -1,4 +1,4 @@
-/* Dashboards: stats, tables, badges, timeline, toolbar. Owner: Sadia */
+
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
 .stat{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;border-top:4px solid var(--blue)}
 .stat b{display:block;font:700 1.9rem var(--display);color:var(--navy)}.stat span{color:var(--muted);font-size:.85rem}

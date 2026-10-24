@@ -1,11 +1,44 @@
-// Resource page: live stock bar preview while typing. Owner: Hamza
+// Resources page: count-up numbers, rising tanks, +/- steppers and live preview. Owner: Hamza
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.res-form input[name=stock]').forEach((input) => {
-    input.addEventListener('input', () => {
-      const res = input.closest('.res'), cap = +res.dataset.cap || 1;
-      const pct = Math.min(100, (+input.value || 0) / cap * 100);
-      res.querySelector('.track i').style.width = pct + '%';
-      res.classList.toggle('res-low', pct < 50 && !res.classList.contains('res-short'));
-    });
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // numbers count up from 0
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const end = +el.dataset.count, suffix = el.dataset.suffix || '';
+    if (reduce || !end) return;
+    const t0 = performance.now();
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / 800);
+      el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))) + suffix;
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    el.textContent = '0' + suffix;
+    requestAnimationFrame(tick);
+  });
+
+  // tanks rise from empty to their level
+  document.querySelectorAll('.rcard').forEach((card) => {
+    const target = card.style.getPropertyValue('--h');
+    if (!reduce) {
+      card.style.setProperty('--h', '0%');
+      requestAnimationFrame(() => requestAnimationFrame(() => card.style.setProperty('--h', target)));
+    }
+    const input = card.querySelector('input[name=stock]');
+    const cap = +card.dataset.cap || 1, shortBy = +card.dataset.short;
+
+    const preview = () => {
+      const v = Math.max(0, +input.value || 0);
+      const pct = Math.min(100, v / cap * 100);
+      card.style.setProperty('--h', pct + '%');
+      card.querySelector('.rc-num').textContent = v;
+      if (!shortBy) {                       // short state is decided by the server after Update
+        card.classList.toggle('rcard-low', pct < 50);
+      }
+    };
+    input.addEventListener('input', preview);
+    card.querySelectorAll('[data-step]').forEach((b) => b.addEventListener('click', () => {
+      input.value = Math.max(0, (+input.value || 0) + +b.dataset.step);
+      preview();
+    }));
   });
 });

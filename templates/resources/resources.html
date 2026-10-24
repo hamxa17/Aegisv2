@@ -1,24 +1,51 @@
 {% extends 'base.html' %}{% load static %}{% block title %}Resources — Aegis{% endblock %}
-{% block content %}<div class="wrap page">
-  <div class="page-head"><div><h1>Resources on hand</h1><p class="muted">Stock is allocated to verified requests in priority order.</p></div>
-    <form method="post" action="{% url 'run_allocation' %}">{% csrf_token %}<button class="btn btn-primary">Recalculate allocation</button></form></div>
-  <div class="res-tiles">
-    <div class="res-tile"><b>{{ stats.total }}</b><span>resources tracked</span></div>
-    <div class="res-tile"><b class="ok">{{ stats.covered }}</b><span>fully covered</span></div>
-    <div class="res-tile"><b class="{% if stats.restock %}short{% endif %}">{{ stats.restock }}</b><span>need restocking</span></div>
+{% block content %}
+<section class="rhero">
+  <div class="wrap rhero-in">
+    <div class="rhero-text">
+      <p class="rhero-eyebrow">Relief stock</p>
+      <h1>Resources on hand</h1>
+      <p>Stock is allocated to verified requests in priority order, most urgent first.</p>
+      <form method="post" action="{% url 'run_allocation' %}">{% csrf_token %}
+        <button class="btn btn-light">&#8635; Recalculate allocation</button></form>
+    </div>
+    <div class="rring" style="--p:{{ stats.percent }}" role="img" aria-label="Overall stock level {{ stats.percent }} percent">
+      <div class="rring-in"><b data-count="{{ stats.percent }}" data-suffix="%">{{ stats.percent }}%</b><span>overall stock</span></div>
+    </div>
+    <div class="rstats">
+      <div><b data-count="{{ stats.total }}">{{ stats.total }}</b><span>resources tracked</span></div>
+      <div><b data-count="{{ stats.covered }}">{{ stats.covered }}</b><span>fully covered</span></div>
+      <div class="{% if stats.restock %}warn{% endif %}"><b data-count="{{ stats.restock }}">{{ stats.restock }}</b><span>need restocking</span></div>
+    </div>
   </div>
-  <div class="panel">{% for row in rows %}{% with r=row.resource %}
-    <div class="res res-{{ row.status }}" data-cap="{{ r.capacity }}">
-      <div class="res-top">
-        <span class="res-name"><span class="res-icon" aria-hidden="true">{{ r.name|slice:":1" }}</span>{{ r.name }}</span>
-        {% if row.status == 'short' %}<span class="chip chip-short">Short {{ row.shortage }}</span>
-        {% elif row.status == 'low' %}<span class="chip chip-low">Below half</span>
-        {% else %}<span class="chip chip-ok">Covered</span>{% endif %}
+</section>
+<div class="wrap rpage">
+  <div class="rgrid">{% for row in rows %}{% with r=row.resource %}
+    <article class="rcard rcard-{{ row.status }}" data-cap="{{ r.capacity }}" data-short="{{ row.shortage }}" style="--h:{{ r.percent }}%">
+      <div class="tank" aria-hidden="true"><div class="tank-fill"></div><i class="tank-mid"></i></div>
+      <div class="rbody">
+        <header>
+          <span class="ricon" aria-hidden="true">
+            {% if r.need_type == 'water' %}<svg viewBox="0 0 24 24"><path d="M12 3c3.5 4.2 6 7.2 6 10.5A6 6 0 0 1 6 13.5C6 10.2 8.5 7.2 12 3z"/></svg>
+            {% elif r.need_type == 'food' %}<svg viewBox="0 0 24 24"><path d="M3 8l9-5 9 5v8l-9 5-9-5V8zM3 8l9 5 9-5M12 13v8"/></svg>
+            {% elif r.need_type == 'medicine' %}<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></svg>
+            {% else %}<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3zM9 20v-6h6v6"/></svg>{% endif %}
+          </span>
+          <h2>{{ r.name }}</h2>
+          {% if row.status == 'short' %}<span class="chip chip-short">&#9650; Short {{ row.shortage }}</span>
+          {% elif row.status == 'low' %}<span class="chip chip-low">&#9660; Below half</span>
+          {% else %}<span class="chip chip-ok">&#10003; Covered</span>{% endif %}
+        </header>
+        <p class="rnum"><b class="rc-num" data-count="{{ r.stock }}">{{ r.stock }}</b><span>of {{ r.capacity }} units</span></p>
+        <p class="rhint">Demand {{ row.demand }}{% if row.shortage %} &middot; <strong>restock {{ row.shortage }} or more</strong>{% else %} &middot; {{ row.spare }} spare{% endif %}</p>
+        <form class="rform" method="post" action="{% url 'update_stock' r.pk %}">{% csrf_token %}
+          <div class="stepper"><button type="button" data-step="-50" aria-label="Remove 50">&minus;</button>
+            <input type="number" min="0" name="stock" value="{{ r.stock }}" aria-label="Stock for {{ r.name }}">
+            <button type="button" data-step="50" aria-label="Add 50">+</button></div>
+          <button class="btn btn-primary btn-sm">Update</button>
+        </form>
       </div>
-      <div class="track"><i style="width:{{ r.percent }}%"></i><u></u></div>
-      <form class="res-form" method="post" action="{% url 'update_stock' r.pk %}">{% csrf_token %}
-        <span class="res-hint">{{ r.stock }} of {{ r.capacity }} · demand {{ row.demand }}{% if row.shortage %} · restock {{ row.shortage }} or more{% else %} · {{ row.spare }} spare{% endif %}</span>
-        <input type="number" min="0" name="stock" value="{{ r.stock }}" aria-label="Stock for {{ r.name }}"><button class="btn btn-outline btn-sm">Update</button></form>
-    </div>{% endwith %}{% empty %}<p class="empty">No resources yet — add them in the admin or run <code>python manage.py seed_demo</code>.</p>{% endfor %}</div>
+    </article>{% endwith %}{% empty %}<p class="empty">No resources yet — add them in the admin or run <code>python manage.py seed_demo</code>.</p>{% endfor %}
+  </div>
 </div>{% endblock %}
 {% block scripts %}<script src="{% static 'js/resources.js' %}"></script>{% endblock %}

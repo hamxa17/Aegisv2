@@ -1,3 +1,4 @@
+# Photos app (media CRUD). Owner: Amrin
 from django.conf import settings
 from django.db import models
 

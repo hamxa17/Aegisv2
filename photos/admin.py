@@ -1,3 +1,4 @@
+# Photos app (media CRUD). Owner: Amrin
 from django.contrib import admin
 
 from .models import RequestPhoto

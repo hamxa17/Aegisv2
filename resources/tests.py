@@ -38,7 +38,9 @@ class StatusTests(TestCase):
         self.assertEqual(rows["food"]["status"], "ok")
         self.assertEqual(rows["food"]["spare"], 400)
         self.assertEqual(rows["medicine"]["status"], "low")
-        self.assertEqual(overview(summary()), {"total": 3, "covered": 1, "restock": 2})
+        stats = overview(summary())
+        self.assertEqual((stats["total"], stats["covered"], stats["restock"]), (3, 1, 2))
+        self.assertEqual((stats["stock"], stats["capacity"], stats["percent"]), (580, 1200, 48))
 
 
 class ResourcePageTests(TestCase):

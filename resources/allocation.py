@@ -47,10 +47,15 @@ def stock_status(res, shortage):
 
 
 def overview(rows):
-    """Headline counts for the Resources page tiles."""
+    """Headline numbers for the Resources page hero: counts plus overall stock level."""
+    stock = sum(r["resource"].stock for r in rows)
+    cap = sum(r["resource"].capacity for r in rows)
     return {"total": len(rows),
             "covered": sum(1 for r in rows if r["status"] == "ok"),
-            "restock": sum(1 for r in rows if r["status"] != "ok")}
+            "restock": sum(1 for r in rows if r["status"] != "ok"),
+            "stock": stock, "capacity": cap,
+            "percent": min(100, round(100 * stock / cap)) if cap else 0}
+
 
 
 def consume(relief_request):

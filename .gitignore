@@ -8,3 +8,5 @@ venv/
 .idea/
 .vscode/
 staticfiles/
+# Added by Sunita: uploaded photos stay on each computer
+media/

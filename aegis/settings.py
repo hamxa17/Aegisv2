@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     "django.contrib.admin", "django.contrib.auth", "django.contrib.contenttypes",
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
     "accounts", "reliefrequests", "coordination", "resources", "volunteers",
+    "photos",  # Added by Sunita: photo upload app
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -43,4 +44,7 @@ TIME_ZONE = "Asia/Dhaka"
 USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+# Added by Sunita: where uploaded photos are stored and served from
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -9,9 +9,9 @@ python manage.py test reliefrequests -v 2
 ```
 
 ## Result
-__Ran 38 tests in 54.226s
+Ran 38 tests in 54.226s
 
-OK__
+OK
 
 ## What is covered
 | Area | Tests |
@@ -22,7 +22,7 @@ OK__
 | My requests view | a family only sees its own requests |
 
 ## Manual checks done
-- [ ] Water-level gauge rises and changes colour while ticking boxes
-- [ ] Submitting redirects to "My requests" with a success message
-- [ ] Priority badge matches the score shown in the form
-- [ ] Timeline shows the correct step for each status
+- [ x ] Water-level gauge rises and changes colour while ticking boxes
+- [ x ] Submitting redirects to "My requests" with a success message
+- [ x ] Priority badge matches the score shown in the form
+- [ x ] Timeline shows the correct step for each status

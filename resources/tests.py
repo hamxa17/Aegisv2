@@ -74,3 +74,27 @@ class ButtonTests(TestCase):
         self.client.force_login(v)
         self.client.post(f"/resources/{self.res.pk}/stock/", {"stock": "999"})
         self.res.refresh_from_db(); self.assertEqual(self.res.stock, 100)
+
+
+class SaveAllTests(TestCase):
+    def setUp(self):
+        self.coord = User.objects.create_user("c3@x.com", password="x", role="coordinator")
+        self.a = Resource.objects.create(name="Water", need_type="water", stock=100, capacity=500)
+        self.b = Resource.objects.create(name="Food", need_type="food", stock=200, capacity=500)
+
+    def test_saves_several_at_once(self):
+        self.client.force_login(self.coord)
+        self.client.post("/resources/save-all/", {f"stock_{self.a.pk}": "150", f"stock_{self.b.pk}": "260"})
+        self.a.refresh_from_db(); self.b.refresh_from_db()
+        self.assertEqual((self.a.stock, self.b.stock), (150, 260))
+
+    def test_bad_value_saves_nothing(self):
+        self.client.force_login(self.coord)
+        self.client.post("/resources/save-all/", {f"stock_{self.a.pk}": "150", f"stock_{self.b.pk}": "abc"})
+        self.a.refresh_from_db(); self.assertEqual(self.a.stock, 100)
+
+    def test_volunteer_cannot_save_all(self):
+        v = User.objects.create_user("v3@x.com", password="x", role="volunteer")
+        self.client.force_login(v)
+        self.client.post("/resources/save-all/", {f"stock_{self.a.pk}": "999"})
+        self.a.refresh_from_db(); self.assertEqual(self.a.stock, 100)

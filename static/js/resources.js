@@ -23,8 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.setProperty('--h', '0%');
       requestAnimationFrame(() => requestAnimationFrame(() => card.style.setProperty('--h', target)));
     }
-    const input = card.querySelector('input[name=stock]');
+    const input = card.querySelector('input[type=number]');
     const cap = +card.dataset.cap || 1, shortBy = +card.dataset.short;
+
+    const dirty = () => {
+      const edited = (+input.value || 0) !== +input.defaultValue;
+      card.classList.toggle('rcard-dirty', edited);
+      card.querySelector('.rdirty').hidden = !edited;
+      const n = document.querySelectorAll('.rcard-dirty').length;
+      document.getElementById('saveBar').hidden = n === 0;
+      document.getElementById('saveCount').textContent = n;
+      document.getElementById('savePlural').textContent = n === 1 ? '' : 's';
+    };
 
     const preview = () => {
       const v = Math.max(0, +input.value || 0);
@@ -34,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!shortBy) {                       // short state is decided by the server after Update
         card.classList.toggle('rcard-low', pct < 50);
       }
+      dirty();
     };
     input.addEventListener('input', preview);
     card.querySelectorAll('[data-step]').forEach((b) => b.addEventListener('click', () => {

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -24,6 +25,34 @@ def update_stock(request, pk):
     else:
         res.save(update_fields=["stock"])
         messages.success(request, f"{res.name} stock updated to {res.stock}.")
+    return redirect("resources")
+
+
+@role_required("coordinator")
+@require_POST
+def update_all_stock(request):
+    """Save every stock box on the page in one go (fields are named stock_<id>)."""
+    changes = []
+    for res in Resource.objects.all():
+        raw = request.POST.get(f"stock_{res.pk}")
+        if raw is None:
+            continue
+        try:
+            value = max(int(raw), 0)
+        except ValueError:
+            messages.error(request, f"{res.name}: enter a whole number. Nothing was saved.")
+            return redirect("resources")
+        if value != res.stock:
+            res.stock = value
+            changes.append(res)
+    with transaction.atomic():
+        for res in changes:
+            res.save(update_fields=["stock"])
+    if changes:
+        names = ", ".join(r.name for r in changes)
+        messages.success(request, f"Saved {len(changes)} change{'s' if len(changes) != 1 else ''}: {names}.")
+    else:
+        messages.info(request, "No changes to save.")
     return redirect("resources")
 
 

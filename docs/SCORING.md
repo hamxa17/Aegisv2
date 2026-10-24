@@ -1,6 +1,6 @@
 # Priority Scoring (Relief Requests)
 
-Owner: Sadia. Code: `reliefrequests/scoring.py`, mirrored in the browser by `static/js/gauge.js`.
+Owner: Member 2 (Sadia). Code: `reliefrequests/scoring.py`, mirrored in the browser by `static/js/gauge.js`.
 
 ## What it does
 Every relief request gets a **priority score** the moment it is saved. The score decides how fast the request is handled.
@@ -41,3 +41,12 @@ Scores add up. The maximum is 14.
 ```
 python manage.py test reliefrequests
 ```
+
+## Test results
+All tests for this module pass (scoring rules, band edges, automatic priority on save, ordering,
+submission by a family, rejection of invalid input, role protection and "only my own requests").
+
+## Screenshots
+![Request form with low priority](screenshots/request-form-low.png)
+![Request form with critical priority](screenshots/request-form-critical.png)
+![My requests page](screenshots/my-requests.png)

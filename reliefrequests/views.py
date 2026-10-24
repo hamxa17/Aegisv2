@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render
 
 from accounts.decorators import role_required
+from photos.utils import attach_photo  # Added by Sunita: photo upload support
 from .forms import ReliefRequestForm
 from .models import ReliefRequest
 
@@ -17,6 +18,7 @@ def submit_request(request):
         obj = form.save(commit=False)
         obj.requester = request.user
         obj.save()
+        attach_photo(obj, request)  # Added by Sunita: save the optional photo with the new request
         messages.success(request, f"Request submitted — priority {obj.priority_score} ({obj.priority_band.title()}).")
         return redirect("my_requests")
     return render(request, "relief/request_form.html", {"form": form})

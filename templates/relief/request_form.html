@@ -1,8 +1,8 @@
 {% extends 'base.html' %}{% load static %}{% block title %}Request relief — Aegis{% endblock %}
-{% block content %}<div class="wrap page"><div class="request-shell">
+{% block content %}{# Added by Sunita: photo styles #}<link rel="stylesheet" href="{% static 'css/photos.css' %}"><div class="wrap page"><div class="request-shell">
   <div>
     <div class="page-head"><div><h1>Submit a relief request</h1><p class="muted">The water level on the right rises with urgency — it shows how your request will be triaged.</p></div></div>
-    <form class="card" method="post" id="request-form">{% csrf_token %}
+    <form class="card" method="post" id="request-form" enctype="multipart/form-data">{# Added by Sunita: enctype lets this form send image files #}{% csrf_token %}
       <div class="form-grid">
         <div class="full">{% with f=form.location %}{% include '_field.html' %}{% endwith %}</div>
         <div>{% with f=form.household_size %}{% include '_field.html' %}{% endwith %}</div>
@@ -13,6 +13,13 @@
           <label class="check">{{ form.medical_emergency }} This involves a medical emergency</label>
           <label class="check">{{ form.no_supplies }} We have no food or drinking water</label>
           <label class="check">{{ form.has_vulnerable }} Children or elderly people are affected</label>
+        </div>
+        {# Added by Sunita: optional photo upload with live preview (photos app) #}
+        <div class="full field photo-field">
+          <label for="id_image">Photo of the situation <span class="muted">(optional)</span></label>
+          <input type="file" name="image" id="id_image" accept="image/*" data-preview="photo-preview">
+          <img id="photo-preview" class="preview" alt="Selected photo" hidden>
+          <input type="text" name="caption" maxlength="120" placeholder="Caption, e.g. Water up to the doorstep">
         </div>
       </div>
       <button class="btn btn-primary">Submit request</button>
@@ -27,4 +34,4 @@
     </ul>
   </aside>
 </div></div>{% endblock %}
-{% block scripts %}<script src="{% static 'js/gauge.js' %}"></script>{% endblock %}
+{% block scripts %}<script src="{% static 'js/gauge.js' %}"></script>{# Added by Sunita: photo preview script #}<script src="{% static 'js/photos.js' %}"></script>{% endblock %}

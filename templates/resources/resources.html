@@ -54,6 +54,9 @@
 .stepper button{border:0;background:var(--sky);color:var(--blue-d);width:38px;height:40px;font-size:1.2rem;font-weight:700;cursor:pointer}
 .stepper button:hover{background:#D5E7FF}
 .stepper input{width:76px;border:0;text-align:center;font:600 1rem var(--body);padding:8px 4px;color:var(--ink);background:#fff;outline:none}
+.rhero-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.rhero-add{color:#fff;border-color:rgba(255,255,255,.55)}
+.rtools{display:flex;gap:10px;font-size:.8rem;font-weight:600}.rtools a{color:var(--muted)}.rtools a:hover{color:var(--blue)}.rtools .rdel:hover{color:var(--critical)}
 .rdirty{font-size:.78rem;font-weight:700;color:var(--blue-d);background:var(--sky);border-radius:999px;padding:3px 10px}
 .rcard-dirty{outline:2px solid var(--blue);outline-offset:-2px}
 .rsave{position:sticky;bottom:16px;margin:22px auto 0;max-width:520px;display:flex;align-items:center;gap:12px;justify-content:space-between;
@@ -71,8 +74,9 @@
       <p class="rhero-eyebrow">Relief stock</p>
       <h1>Resources on hand</h1>
       <p>Stock is allocated to verified requests in priority order, most urgent first.</p>
-      <form method="post" action="{% url 'run_allocation' %}">{% csrf_token %}
+      <div class="rhero-actions"><form method="post" action="{% url 'run_allocation' %}">{% csrf_token %}
         <button class="btn btn-light">&#8635; Recalculate allocation</button></form>
+      <a class="btn btn-ghost rhero-add" href="{% url 'create_resource' %}">+ Add resource</a></div>
     </div>
     <div class="rring" style="--p:{{ stats.percent }}" role="img" aria-label="Overall stock level {{ stats.percent }} percent">
       <div class="rring-in"><b data-count="{{ stats.percent }}" data-suffix="%">{{ stats.percent }}%</b><span>overall stock</span></div>
@@ -98,6 +102,7 @@
             {% else %}<svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3zM9 20v-6h6v6"/></svg>{% endif %}
           </span>
           <h2>{{ r.name }}</h2>
+          <span class="rtools"><a href="{% url 'edit_resource' r.pk %}">Edit</a><a href="{% url 'delete_resource' r.pk %}" class="rdel">Delete</a></span>
           {% if row.status == 'short' %}<span class="rchip rchip-short">&#9650; Short {{ row.shortage }}</span>
           {% elif row.status == 'low' %}<span class="rchip rchip-low">&#9660; Below half</span>
           {% else %}<span class="rchip rchip-ok">&#10003; Covered</span>{% endif %}

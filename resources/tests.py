@@ -98,3 +98,44 @@ class SaveAllTests(TestCase):
         self.client.force_login(v)
         self.client.post("/resources/save-all/", {f"stock_{self.a.pk}": "999"})
         self.a.refresh_from_db(); self.assertEqual(self.a.stock, 100)
+
+
+class CrudTests(TestCase):
+    def setUp(self):
+        self.coord = User.objects.create_user("c4@x.com", password="x", role="coordinator")
+        self.client.force_login(self.coord)
+
+    def test_create_resource(self):
+        r = self.client.post("/resources/new/", {"name": "Water", "need_type": "water", "stock": 10, "capacity": 100})
+        self.assertEqual(r.status_code, 302)
+        self.assertTrue(Resource.objects.filter(need_type="water", stock=10).exists())
+
+    def test_stock_above_capacity_rejected(self):
+        r = self.client.post("/resources/new/", {"name": "Water", "need_type": "water", "stock": 500, "capacity": 100})
+        self.assertEqual(r.status_code, 200)
+        self.assertContains(r, "Stock cannot be more than capacity")
+        self.assertEqual(Resource.objects.count(), 0)
+
+    def test_duplicate_type_rejected(self):
+        Resource.objects.create(name="Water", need_type="water", stock=1, capacity=10)
+        self.client.post("/resources/new/", {"name": "More water", "need_type": "water", "stock": 1, "capacity": 10})
+        self.assertEqual(Resource.objects.count(), 1)
+
+    def test_edit_resource(self):
+        res = Resource.objects.create(name="Water", need_type="water", stock=1, capacity=10)
+        self.client.post(f"/resources/{res.pk}/edit/", {"name": "Bottled water", "need_type": "water", "stock": 5, "capacity": 20})
+        res.refresh_from_db()
+        self.assertEqual((res.name, res.stock, res.capacity), ("Bottled water", 5, 20))
+
+    def test_delete_needs_confirmation(self):
+        res = Resource.objects.create(name="Water", need_type="water", stock=1, capacity=10)
+        self.assertContains(self.client.get(f"/resources/{res.pk}/delete/"), "Delete Water?")
+        self.assertTrue(Resource.objects.filter(pk=res.pk).exists())
+        self.client.post(f"/resources/{res.pk}/delete/")
+        self.assertFalse(Resource.objects.filter(pk=res.pk).exists())
+
+    def test_volunteer_cannot_create(self):
+        v = User.objects.create_user("v4@x.com", password="x", role="volunteer")
+        self.client.force_login(v)
+        self.client.post("/resources/new/", {"name": "Water", "need_type": "water", "stock": 1, "capacity": 10})
+        self.assertEqual(Resource.objects.count(), 0)

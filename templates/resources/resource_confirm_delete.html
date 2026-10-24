@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block title %}Delete resource — Aegis{% endblock %}
+{% block content %}<div class="wrap page" style="max-width:560px">
+  <form class="card" method="post">{% csrf_token %}
+    <h1>Delete {{ res.name }}?</h1>
+    <p class="muted">This removes the resource and its current allocation plan ({{ res.stock }} units in stock). Requests are not deleted. You can recalculate allocation afterwards.</p>
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <button class="btn btn-primary" style="background:var(--critical)">Yes, delete</button>
+      <a class="btn btn-outline" href="{% url 'resources' %}">Keep it</a>
+    </div>
+  </form>
+</div>{% endblock %}

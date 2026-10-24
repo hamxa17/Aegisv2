@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST
 
 from accounts.decorators import role_required
 from . import allocation
+from .forms import ResourceForm
 from .models import Resource
 
 
@@ -12,6 +13,38 @@ from .models import Resource
 def resource_list(request):
     rows = allocation.summary()
     return render(request, "resources/resources.html", {"rows": rows, "stats": allocation.overview(rows)})
+
+
+@role_required("coordinator")
+def create_resource(request):
+    form = ResourceForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        res = form.save()
+        messages.success(request, f"{res.name} added.")
+        return redirect("resources")
+    return render(request, "resources/resource_form.html", {"form": form, "heading": "Add a resource"})
+
+
+@role_required("coordinator")
+def edit_resource(request, pk):
+    res = get_object_or_404(Resource, pk=pk)
+    form = ResourceForm(request.POST or None, instance=res)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, f"{res.name} updated.")
+        return redirect("resources")
+    return render(request, "resources/resource_form.html", {"form": form, "heading": f"Edit {res.name}"})
+
+
+@role_required("coordinator")
+def delete_resource(request, pk):
+    res = get_object_or_404(Resource, pk=pk)
+    if request.method == "POST":
+        name = res.name
+        res.delete()
+        messages.success(request, f"{name} deleted.")
+        return redirect("resources")
+    return render(request, "resources/resource_confirm_delete.html", {"res": res})
 
 
 @role_required("coordinator")

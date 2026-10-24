@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block title %}My profile — Aegis{% endblock %}
+{% block content %}<div class="auth-shell"><div class="card auth-card">
+  <h1>My profile</h1>
+  <p class="muted">{{ user.email }} · {{ user.get_role_display }}</p>
+  <form method="post">{% csrf_token %}
+    {% for f in form %}{% include '_field.html' %}{% endfor %}
+    <button class="btn btn-primary btn-block" style="margin-top:8px">Save changes</button>
+  </form>
+</div></div>{% endblock %}

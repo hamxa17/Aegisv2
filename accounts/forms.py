@@ -33,3 +33,9 @@ class RegisterForm(UserCreationForm):
 
 class EmailLoginForm(AuthenticationForm):
     username = forms.EmailField(label="Email")
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name", "phone")
+        labels = {"first_name": "Full name"}

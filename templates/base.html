@@ -21,6 +21,7 @@
       {% else %}
         <a href="{% url 'coord_dashboard' %}">Overview</a><a href="{% url 'resources' %}">Resources</a><a href="{% url 'reports' %}">Reports</a>
       {% endif %}
+      <a href="{% url 'profile' %}">Profile</a>
       <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="btn btn-outline btn-sm">Log out</button></form>
     {% else %}
       <a href="{% url 'index' %}#how">How it works</a><a href="{% url 'index' %}#priority">Priority</a>

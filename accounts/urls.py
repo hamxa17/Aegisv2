@@ -9,4 +9,5 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name="accounts/login.html", authentication_form=EmailLoginForm), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
     path("go/", views.home_redirect, name="home_redirect"),
+    path("profile/", views.profile, name="profile"),
 ]

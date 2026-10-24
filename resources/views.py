@@ -9,7 +9,8 @@ from .models import Resource
 
 @role_required("coordinator")
 def resource_list(request):
-    return render(request, "resources/resources.html", {"rows": allocation.summary()})
+    rows = allocation.summary()
+    return render(request, "resources/resources.html", {"rows": rows, "stats": allocation.overview(rows)})
 
 
 @role_required("coordinator")

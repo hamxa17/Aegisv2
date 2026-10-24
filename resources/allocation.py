@@ -33,8 +33,24 @@ def summary():
     rows = []
     for res in Resource.objects.all():
         demand = ReliefRequest.objects.filter(status__in=OPEN, need_type=res.need_type).aggregate(s=Sum("quantity"))["s"] or 0
-        rows.append({"resource": res, "demand": demand, "shortage": max(demand - res.stock, 0)})
+        shortage = max(demand - res.stock, 0)
+        rows.append({"resource": res, "demand": demand, "shortage": shortage,
+                     "spare": max(res.stock - demand, 0), "status": stock_status(res, shortage)})
     return rows
+
+
+def stock_status(res, shortage):
+    """'short' if open demand exceeds stock, 'low' if under half of capacity, else 'ok'."""
+    if shortage:
+        return "short"
+    return "low" if res.capacity and res.stock * 2 < res.capacity else "ok"
+
+
+def overview(rows):
+    """Headline counts for the Resources page tiles."""
+    return {"total": len(rows),
+            "covered": sum(1 for r in rows if r["status"] == "ok"),
+            "restock": sum(1 for r in rows if r["status"] != "ok")}
 
 
 def consume(relief_request):

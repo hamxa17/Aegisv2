@@ -10,3 +10,4 @@ venv/
 staticfiles/
 # Added by Sunita: uploaded photos stay on each computer
 media/
+media/

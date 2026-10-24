@@ -7,6 +7,7 @@ from django.views.decorators.http import require_POST
 from accounts.decorators import role_required
 from reliefrequests.models import ReliefRequest
 from resources.allocation import consume
+from .forms import ProofForm
 from .models import Assignment
 
 S = ReliefRequest.Status
@@ -24,11 +25,45 @@ def mark_delivered(request, pk):
     a = get_object_or_404(Assignment, pk=pk, volunteer=request.user, delivered_at__isnull=True)
     a.delivered_at = timezone.now()
     a.note = request.POST.get("note", "")[:200]
+    proof = ProofForm(request.POST, request.FILES)
+    if proof.is_valid() and proof.cleaned_data["proof"]:
+        a.proof = proof.cleaned_data["proof"]
+    elif proof.errors:
+        messages.error(request, proof.errors["proof"][0])
+        return redirect("tasks")
     a.save()
     a.request.status = S.DELIVERED
     a.request.save()
     consume(a.request)
     messages.success(request, "Marked as delivered. Thank you!")
+    return redirect("tasks")
+
+
+@role_required("volunteer")
+@require_POST
+def replace_proof(request, pk):
+    a = get_object_or_404(Assignment, pk=pk, volunteer=request.user, delivered_at__isnull=False)
+    form = ProofForm(request.POST, request.FILES)
+    if form.is_valid() and form.cleaned_data["proof"]:
+        if a.proof:
+            a.proof.delete(save=False)
+        a.proof = form.cleaned_data["proof"]
+        a.save()
+        messages.success(request, "Delivery photo updated.")
+    else:
+        messages.error(request, form.errors.get("proof", ["Choose a photo first."])[0])
+    return redirect("tasks")
+
+
+@role_required("volunteer")
+@require_POST
+def remove_proof(request, pk):
+    a = get_object_or_404(Assignment, pk=pk, volunteer=request.user, delivered_at__isnull=False)
+    if a.proof:
+        a.proof.delete(save=False)
+        a.proof = ""
+        a.save()
+        messages.success(request, "Delivery photo removed.")
     return redirect("tasks")
 
 

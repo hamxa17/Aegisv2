@@ -5,8 +5,14 @@
     <thead><tr><th>Request</th><th>Priority</th><th>Deliver</th></tr></thead>
     {% for a in todo %}<tr><td><b>{{ a.request.get_need_type_display }} ×{{ a.request.quantity }}</b><br><span class="muted">{{ a.request.location }} · {{ a.request.household_size }} people</span></td>
       <td><span class="badge b-{{ a.request.priority_band }}">{{ a.request.priority_band|title }}</span></td>
-      <td><form method="post" action="{% url 'mark_delivered' a.pk %}" data-confirm="Confirm this delivery is complete?">{% csrf_token %}<input type="text" name="note" placeholder="Note (optional)"><button class="btn btn-primary btn-sm">Mark delivered</button></form></td></tr>
+      <td><form method="post" enctype="multipart/form-data" action="{% url 'mark_delivered' a.pk %}" data-confirm="Confirm this delivery is complete?">{% csrf_token %}<input type="text" name="note" placeholder="Note (optional)"><input type="file" name="proof" accept="image/*" title="Delivery photo (optional)"><button class="btn btn-primary btn-sm">Mark delivered</button></form></td></tr>
     {% empty %}<tr><td colspan="3" class="empty">Nothing assigned right now.</td></tr>{% endfor %}</table></div></div>
-  {% if done %}<p class="muted" style="margin-top:24px">Completed: {{ done|length }} deliveries. Thank you!</p>{% endif %}
+  {% if done %}<div class="panel" style="margin-top:24px"><div class="panel-head"><h2>Completed ({{ done|length }})</h2></div><div class="table-wrap"><table>
+    <thead><tr><th>Request</th><th>Delivery photo</th><th></th></tr></thead>
+    {% for a in done %}<tr><td><b>{{ a.request.get_need_type_display }} ×{{ a.request.quantity }}</b><br><span class="muted">{{ a.request.location }} · {{ a.delivered_at|date:"d M, H:i" }}</span></td>
+      <td>{% if a.proof %}<a href="{{ a.proof.url }}" target="_blank"><img src="{{ a.proof.url }}" alt="Delivery proof" style="width:72px;height:72px;object-fit:cover;border-radius:10px;border:1px solid #dbe3ee"></a>{% else %}<span class="muted">No photo</span>{% endif %}</td>
+      <td><form method="post" enctype="multipart/form-data" action="{% url 'replace_proof' a.pk %}" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">{% csrf_token %}<input type="file" name="proof" accept="image/*" required><button class="btn btn-outline btn-sm">{% if a.proof %}Replace{% else %}Add photo{% endif %}</button></form>
+        {% if a.proof %}<form method="post" action="{% url 'remove_proof' a.pk %}" style="margin-top:6px" data-confirm="Remove this delivery photo?">{% csrf_token %}<button class="btn btn-outline btn-sm">Remove photo</button></form>{% endif %}</td></tr>
+    {% endfor %}</table></div></div>{% endif %}
 </div>{% endblock %}
 {% block scripts %}<script src="{% static 'js/landing.js' %}"></script>{% endblock %}

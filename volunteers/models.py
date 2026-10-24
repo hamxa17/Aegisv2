@@ -10,3 +10,5 @@ class Assignment(models.Model):
     assigned_at = models.DateTimeField(auto_now_add=True)
     delivered_at = models.DateTimeField(null=True, blank=True)
     note = models.CharField(max_length=200, blank=True)
+    # Optional proof-of-delivery photo, saved under media/delivery_proofs/.
+    proof = models.ImageField(upload_to="delivery_proofs/%Y/%m/", blank=True)

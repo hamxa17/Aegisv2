@@ -1,4 +1,4 @@
-# Landing page statistics. Owner: Amrin
+# Landing page statistics. Owner: Sunita
 from django.shortcuts import render
 
 from accounts.models import User

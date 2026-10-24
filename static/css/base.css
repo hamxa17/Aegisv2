@@ -1,4 +1,4 @@
-/* AEGIS "Tidewater" design system — tokens, layout, nav, buttons. Owner: Amrin */
+/* AEGIS "Tidewater" design system — tokens, layout, nav, buttons. Owner: Sunita */
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
 :root{--navy:#0A2540;--blue:#1B6EF3;--blue-d:#1558C8;--sky:#EAF3FF;--aqua:#22B8CF;--ink:#12263F;--muted:#5B6B82;--line:#DCE6F2;--bg:#F7FAFE;
 --low:#1FA67A;--medium:#D99A00;--high:#E8761E;--critical:#D92D3A;--radius:14px;--shadow:0 6px 24px rgba(10,37,64,.08);--nav-h:64px;

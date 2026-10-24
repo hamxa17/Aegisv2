@@ -1,0 +1,36 @@
+{# Photos app page. Owner: Sunita #}
+{% extends 'base.html' %}{% load static %}{% block title %}Photos — Aegis{% endblock %}
+{% block content %}<link rel="stylesheet" href="{% static 'css/photos.css' %}">
+<div class="wrap page">
+  <div class="page-head"><div>
+    <h1>Photos for request #{{ obj.pk }}</h1>
+    <p class="muted">{{ obj.get_need_type_display }} · {{ obj.location }} · {{ obj.get_status_display }}</p>
+  </div>
+  <a class="btn btn-outline" href="{% if user.role == 'coordinator' %}{% url 'coord_dashboard' %}{% else %}{% url 'my_requests' %}{% endif %}">Back</a></div>
+  <div class="photo-layout">
+    <form class="card upload-card" method="post" enctype="multipart/form-data">{% csrf_token %}
+      <h2>Add a photo</h2>
+      <p class="muted">Show the situation on the ground so coordinators can judge it faster.</p>
+      <img id="photo-preview" class="preview" alt="" hidden>
+      {% with f=form.image %}{% include '_field.html' %}{% endwith %}
+      {% with f=form.caption %}{% include '_field.html' %}{% endwith %}
+      <button class="btn btn-primary">Upload photo</button>
+    </form>
+    <div>
+      <p class="photo-count"><b>{{ photos|length }}</b> photo{{ photos|length|pluralize }}</p>
+      <div class="gallery">
+        {% for p in photos %}<figure class="photo-card">
+          <a href="{{ p.image.url }}" target="_blank"><img src="{{ p.image.url }}" alt="{{ p.caption|default:'Request photo' }}"></a>
+          <figcaption>
+            <span>{{ p.caption|default:"No caption" }}</span>
+            <small class="muted">{{ p.uploaded_by.display_name|default:"Unknown" }} · {{ p.uploaded_at|timesince }} ago</small>
+            {% if user.role == 'coordinator' or p.uploaded_by_id == user.id %}<span class="photo-actions">
+              <a class="btn btn-outline btn-sm" href="{% url 'photo_edit' p.pk %}">Edit</a>
+              <a class="btn btn-danger btn-sm" href="{% url 'photo_delete' p.pk %}">Delete</a></span>{% endif %}
+          </figcaption>
+        </figure>{% empty %}<div class="photo-empty">No photos yet. Add the first one.</div>{% endfor %}
+      </div>
+    </div>
+  </div>
+</div>{% endblock %}
+{% block scripts %}<script src="{% static 'js/photos.js' %}"></script>{% endblock %}

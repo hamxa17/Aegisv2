@@ -1,0 +1,14 @@
+{# Photos app page. Owner: Sunita #}
+{% extends 'base.html' %}{% load static %}{% block title %}Delete photo — Aegis{% endblock %}
+{% block content %}<link rel="stylesheet" href="{% static 'css/photos.css' %}">
+<div class="wrap page narrow">
+  <div class="card danger-card">
+    <h1>Delete this photo?</h1>
+    <img class="preview" src="{{ photo.image.url }}" alt="Photo to delete">
+    <p class="muted">{{ photo.caption|default:"No caption" }} · request #{{ photo.request_id }}. This cannot be undone.</p>
+    <form method="post" class="photo-actions">{% csrf_token %}
+      <button class="btn btn-danger">Yes, delete</button>
+      <a class="btn btn-outline" href="{% url 'photo_list' photo.request_id %}">Cancel</a>
+    </form>
+  </div>
+</div>{% endblock %}

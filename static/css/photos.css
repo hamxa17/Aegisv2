@@ -16,3 +16,4 @@
 .danger-card{border-top:4px solid var(--critical)}
 @media(max-width:820px){.photo-layout{grid-template-columns:1fr}}
 .photo-field input[type=text]{margin-top:4px}
+.preview[hidden]{display:none}
